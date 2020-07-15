@@ -1,7 +1,8 @@
 export const NESGames = [
     {
-        name: "热血足球2（热血联盟足球）",
-        url: '/roms/hotblood-football2.nes'
+        name: "热血联盟足球（汉化版）",
+        // url: '/roms/hotblood-football2.nes'
+        url: '/roms/nekketsu_zuqiu3_CHS.nes'
     },
 ];
 

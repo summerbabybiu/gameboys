@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-07-15 19:16:44
- * @LastEditTime: 2020-07-15 21:12:26
- * @LastEditors: your name
+ * @LastEditTime: 2020-07-15 23:04:03
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /gameboys/src/nesweb/Speakers.js
  */ 
@@ -18,10 +18,11 @@ export default class Speakers {
   }
 
   getSampleRate() {
-    if (!window.AudioContext) {
+    var AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (AudioContext) {
       return 44100;
     }
-    let myCtx = new window.AudioContext();
+    let myCtx = new AudioContext();
     let sampleRate = myCtx.sampleRate;
     myCtx.close();
     return sampleRate;
@@ -29,10 +30,12 @@ export default class Speakers {
 
   start() {
     // Audio is not supported
-    if (!window.AudioContext) {
+    var AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) {
+      console.log('audio context not support');
       return;
     }
-    this.audioCtx = new window.AudioContext();
+    this.audioCtx = new AudioContext();
     this.scriptNode = this.audioCtx.createScriptProcessor(1024, 0, 2);
     this.scriptNode.onaudioprocess = this.onaudioprocess;
     this.scriptNode.connect(this.audioCtx.destination);

@@ -6,18 +6,19 @@ import { LeftController, RightController } from './GameController';
 
 function App() {
   const [romData, setRomData] = useState(null);
-  const [game, setGame] = useState(NESGames[0]);
+  const [url, setUrl] = useState('');
   const emulator = useRef(null);
 
   useEffect(() => {
-    loadBinary(game.url, (e, data) => {
+    if (url.length === 0) return;
+    loadBinary(url, (e, data) => {
       if (data) {
         setRomData(data);
       }
     }, progress => {
       console.log(progress);
     });
-  }, []);
+  }, [url]);
 
   const handleKeyDown = (k: number) => {
     console.log('keydown', k);
@@ -33,14 +34,14 @@ function App() {
     }
   }
 
-  if (!romData) {
-    return (<div className="App"></div>)
-  }
+  // if (!romData) {
+  //   return (<div className="App"></div>)
+  // }
   return (
     <div className="App">
       <LeftController onKeyDown={k => handleKeyDown(k)} onkeyUp={k => handleKeyUp(k)} />
       <div id="monitor">
-        <Emulator romData={romData} ref={emulator}/>
+        { romData ? <Emulator romData={romData} ref={emulator}/> : <GameList onselect={ url => setUrl(url)}/> }
       </div>
       <div id="right-controller">
         <RightController onKeyDown={k => handleKeyDown(k)} onkeyUp={k => handleKeyUp(k)} />
@@ -49,6 +50,20 @@ function App() {
   );
 }
 
+
+function GameList(props: { onselect: (url: string) => void}) {
+  return (
+    <div className="game-list" onClick={e => {
+      props.onselect((e.target as any).getAttribute('data-key'));
+    }}>
+      {NESGames.map(game => {
+        return (
+          <div className="game" key={game.url} data-key={game.url}>{game.name}</div>
+        );
+      })}
+    </div>
+  );
+}
 
 
 export default App;
