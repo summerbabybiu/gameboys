@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-07-15 19:16:44
+ * @LastEditTime: 2020-07-15 21:12:26
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /gameboys/src/nesweb/Speakers.js
+ */ 
 import RingBuffer from "ringbufferjs";
 // import { handleError } from "./utils";
 const handleError = e => {};
@@ -44,7 +52,7 @@ export default class Speakers {
 
   writeSample = (left, right) => {
     if (this.buffer.size() / 2 >= this.bufferSize) {
-      console.log(`Buffer overrun`);
+      // console.log(`Buffer overrun`);
       this.buffer.deqN(this.bufferSize / 2);
     }
     this.buffer.enq(left);

@@ -19,29 +19,31 @@ function App() {
     });
   }, []);
 
+  const handleKeyDown = (k: number) => {
+    console.log('keydown', k);
+    if ((window as any).nes) {
+      (window as any).nes.buttonDown(1, k);
+    }
+  }
+
+  const handleKeyUp = (k: number) => {
+    console.log('keyup', k);
+    if ((window as any).nes) {
+      (window as any).nes.buttonUp(1, k);
+    }
+  }
+
   if (!romData) {
     return (<div className="App"></div>)
   }
   return (
     <div className="App">
-      <LeftController onKeyDown={k => {
-        if (!emulator) return;
-        (emulator.current as any).onKeydown(k);
-      }} onkeyUp={k => {
-        if (!emulator) return;
-        (emulator.current as any).onKeyup(k);
-      }} />
+      <LeftController onKeyDown={k => handleKeyDown(k)} onkeyUp={k => handleKeyUp(k)} />
       <div id="monitor">
         <Emulator romData={romData} ref={emulator}/>
       </div>
       <div id="right-controller">
-        <RightController onKeyDown={k => {
-          if (!emulator) return;
-          (emulator.current as any).onKeydown(k);
-        }} onkeyUp={k => {
-          if (!emulator) return;
-          (emulator.current as any).onKeyup(k);
-        }} />
+        <RightController onKeyDown={k => handleKeyDown(k)} onkeyUp={k => handleKeyUp(k)} />
       </div>
     </div>
   );

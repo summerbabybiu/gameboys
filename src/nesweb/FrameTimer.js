@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-07-15 19:16:44
+ * @LastEditTime: 2020-07-15 21:12:43
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /gameboys/src/nesweb/FrameTimer.js
+ */ 
 const FPS = 60.098;
 
 export default class FrameTimer {
@@ -71,6 +79,6 @@ export default class FrameTimer {
         this.generateFrame();
       }, (i * timeToNextFrame) / numFrames);
     }
-    if (numFrames > 1) console.log("SKIP", numFrames - 1, this.lastFrameTime);
+    // if (numFrames > 1) console.log("SKIP", numFrames - 1, this.lastFrameTime);
   };
 }

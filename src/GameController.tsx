@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { stat } from 'fs';
+import React from 'react';
 declare module jsnes { };
 
-const KEYDOWN = 0x41;
-const KEYUP = 0x40;
+// const KEYDOWN = 0x41;
+// const KEYUP = 0x40;
 
 export enum ControllerKeys {
     BUTTON_A = 0,
@@ -76,7 +75,7 @@ export class LeftController extends React.Component<ControllerProps, any> {
 
     handleTouchStart(ev: TouchEvent) {
         if (!this.stick) return;
-        const touch = ev.changedTouches[0];
+        const touch = ev.targetTouches[0];
         const rect = (this.stick.current as any).getBoundingClientRect();
         this.dispatchTouchEvent(rect as DOMRect, { x: touch.pageX, y: touch.pageY });
         ev.preventDefault();
@@ -84,17 +83,18 @@ export class LeftController extends React.Component<ControllerProps, any> {
 
     handleTouchMove(ev: TouchEvent) {
         if (!this.stick.current) return;
-        const touch = ev.changedTouches[0];
+        const touch = ev.targetTouches[0];
         const rect = (this.stick.current as any).getBoundingClientRect();
         this.dispatchTouchEvent(rect as DOMRect, { x: touch.pageX, y: touch.pageY });
         ev.preventDefault();
     };
 
     handleTouchEnd(ev: TouchEvent) {
-        if (!this.stick.current) return;
-        const touch = ev.changedTouches[0];
-        const rect = (this.stick.current as any).getBoundingClientRect();
-        this.dispatchTouchEvent(rect as DOMRect, { x: touch.pageX, y: touch.pageY });
+        // console.log(ev);
+        // if (!this.stick.current) return;
+        // const touch = ev.targetTouches[0];
+        // const rect = (this.stick.current as any).getBoundingClientRect();
+        // this.dispatchTouchEvent(rect as DOMRect, { x: touch.pageX, y: touch.pageY });
         const keys = RetriveButtonKeysByStatus(this.state.currentStatus);
         keys.forEach(k => this.props.onkeyUp(k));
         this.setState({
@@ -132,7 +132,7 @@ export class LeftController extends React.Component<ControllerProps, any> {
                 nextStatus = DirectionStatus.RIGHT_BOTTOM;
             }
         }
-        if (this.state.currentStatus != nextStatus) {
+        if (this.state.currentStatus !== nextStatus) {
             this.changeControllerDirection(nextStatus);
         }
     };
@@ -177,9 +177,12 @@ export class LeftController extends React.Component<ControllerProps, any> {
             <div id="left-controller">
                 <div className="option-controls">
                     <div id="control-select" className="gamepad" onClick={
-                        () => {
+                        e => {
                             this.props.onKeyDown(ControllerKeys.BUTTON_SELECT);
-                            this.props.onkeyUp(ControllerKeys.BUTTON_SELECT);
+                            setTimeout(() => {
+                                this.props.onkeyUp(ControllerKeys.BUTTON_SELECT);
+                            }, 50);
+                            e.preventDefault();
                         }
                     }></div>
                 </div>
@@ -207,23 +210,145 @@ export class LeftController extends React.Component<ControllerProps, any> {
 }
 
 export class RightController extends React.Component<ControllerProps, any> {
+
+    buttonA: any;
+    buttonB: any;
+    buttonC: any;
     constructor(props: ControllerProps) {
         super(props);
+        this.buttonA = React.createRef();
+        this.buttonB = React.createRef();
+        this.buttonC = React.createRef();
+        this.state = {
+            currentStatus: 0
+        };
+    }
+
+    handleTouchStart(ev: TouchEvent) {
+        const touch = ev.targetTouches[0];
+        // const rect = (this.stick.current as any).getBoundingClientRect();
+        this.dispatchTouchEvent({ x: touch.pageX, y: touch.pageY });
+        ev.preventDefault();
+    };
+
+    handleTouchMove(ev: TouchEvent) {
+        const touch = ev.targetTouches[0];
+        this.dispatchTouchEvent({ x: touch.pageX, y: touch.pageY });
+        ev.preventDefault();
+    };
+
+    handleTouchEnd(ev: TouchEvent) {
+        // const touch = ev.changedTouches[0];
+        // this.dispatchTouchEvent({ x: touch.pageX, y: touch.pageY });
+        if (this.state.currentStatus > 0) {
+            const ks = this.keysForStatus(this.state.currentStatus);
+            ks.forEach(k => this.props.onkeyUp(k));
+            this.setState({
+                currentStatus: 0
+            })
+        }
+        ev.preventDefault();
+    };
+
+    rectContainsPoint(rect: DOMRect, point: {x: number, y: number}) {
+        return point.x >= rect.left && point.x <= rect.right && point.y >= rect.top && point.y <= rect.bottom;
+    }
+
+    dispatchTouchEvent(point: {x: number, y: number}) {
+        if (!this.buttonA.current || !this.buttonB.current || !this.buttonC.current) return;
+        const rectA = this.buttonA.current.getBoundingClientRect() as DOMRect;
+        const rectB = this.buttonB.current.getBoundingClientRect() as DOMRect;
+        const rectC = this.buttonC.current.getBoundingClientRect() as DOMRect;
+        let key: any[] = [];
+        let nextStatus = 0;
+        if (this.rectContainsPoint(rectA, point)) {
+            key = [ControllerKeys.BUTTON_A];
+            nextStatus = 1;
+        } else if (this.rectContainsPoint(rectB, point)) {
+            key = [ControllerKeys.BUTTON_B];
+            nextStatus = 2;
+        } else if (this.rectContainsPoint(rectC, point)) {
+            key = [ControllerKeys.BUTTON_A, ControllerKeys.BUTTON_B];
+            nextStatus = 3;
+        }
+        if (nextStatus !== this.state.currentStatus) {
+            const ks = this.keysForStatus(nextStatus);
+            ks.forEach(k => this.props.onKeyDown(k));
+            this.setState({
+                currentStatus: nextStatus
+            });
+        }
+    }
+
+    keysForStatus(s: number) {
+        switch(s) {
+            case 1: return [ControllerKeys.BUTTON_A];
+            case 2: return [ControllerKeys.BUTTON_B];
+            case 3: return [ControllerKeys.BUTTON_A, ControllerKeys.BUTTON_B]
+        }
+        return [];
+    }
+
+    componentDidMount() {
+        const container = document.getElementById('action-controls');
+        container?.addEventListener('touchstart', this.handleTouchStart.bind(this), false);
+        container?.addEventListener('touchmove', this.handleTouchMove.bind(this), false);
+        container?.addEventListener('touchend', this.handleTouchEnd.bind(this), false);
+    }
+
+    componentWillUnmount() {
+        const container = document.getElementById('action-controls');
+        container?.removeEventListener('touchstart', this.handleTouchStart, false);
+        container?.removeEventListener('touchmove', this.handleTouchMove, false);
+        container?.removeEventListener('touchend', this.handleTouchEnd, false);
     }
 
     render() {
         return (
             <div id="right-controller">
-                <div className="option-controls">
-                    <div id="control-start" className="gamepad" onClick={() => {
+                <div className="option-controls" style={{justifyContent: 'flex-start'}}>
+                    <div id="control-start" className="gamepad" onClick={e => {
                         this.props.onKeyDown(ControllerKeys.BUTTON_START);
-                        this.props.onkeyUp(ControllerKeys.BUTTON_START);
+                        setTimeout(() => {
+                            this.props.onkeyUp(ControllerKeys.BUTTON_START);
+                        }, 50);
+                        e.preventDefault();
                     }}></div>
                 </div>
-                <div className="arrow-controls">
+                <div className="arrow-controls" id="action-controls" style={{justifyContent: 'space-around'}}>
                     <div className="arrow-top">
+                        <div id="control-ab" className="gamepad" ref={this.buttonC}
+                        // onClick={e => {
+                        //     this.props.onKeyDown(ControllerKeys.BUTTON_A);
+                        //     this.props.onKeyDown(ControllerKeys.BUTTON_B);
+                        //     setTimeout(() => {
+                        //         this.props.onkeyUp(ControllerKeys.BUTTON_A);
+                        //         this.props.onkeyUp(ControllerKeys.BUTTON_B);
+                        //     }, 50);
+                        //     e.preventDefault();
+                        // }}
+                        ></div>
                     </div>
-                    <div className="arrow-top"></div>
+                    <div className="arrow-top" style={{justifyContent: 'space-around'}}>
+                    <div id="control-b" className="gamepad"  ref={this.buttonB}
+                    // onClick={e => {
+                    //     this.props.onKeyDown(ControllerKeys.BUTTON_B);
+                    //     setTimeout(() => {
+                    //         this.props.onkeyUp(ControllerKeys.BUTTON_B);
+                    //     }, 50);
+                    //     e.preventDefault();
+                    // }}
+                    ></div>
+                    <div id="control-a" className="gamepad" ref={this.buttonA}
+                    // onClick={e => {
+                    //     this.props.onKeyDown(ControllerKeys.BUTTON_A);
+                    //     setTimeout(() => {
+                    //         this.props.onkeyUp(ControllerKeys.BUTTON_A);
+                    //     }, 50);
+                    //     e.preventDefault();
+                    // }}
+                    ></div>
+                    </div>
                 </div>
                 <div className="option-controls"></div>
             </div>
