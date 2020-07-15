@@ -7055,6 +7055,11 @@ jsesc@~0.5.0:
   resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-0.5.0.tgz#e7dee66e35d6fc16f710fe91d5cf69f70f08911d"
   integrity sha1-597mbjXW/Bb3EP6R1c9p9w8IkR0=
 
+jsnes@^1.1.0:
+  version "1.1.0"
+  resolved "http://bnpm.byted.org/jsnes/download/jsnes-1.1.0.tgz#25ff850d473a6cc17176e03daca6cd95c877c56f"
+  integrity sha1-Jf+FDUc6bMFxduA9rKbNlch3xW8=
+
 json-parse-better-errors@^1.0.1, json-parse-better-errors@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/json-parse-better-errors/-/json-parse-better-errors-1.0.2.tgz#bb867cfb3450e69107c131d1c514bab3dc8bcaa9"
@@ -10111,6 +10116,11 @@ rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.3, rimraf@^2.7.1:
   integrity sha512-uWjbaKIK3T1OSVptzX7Nl6PvQ3qAGtKEtVRjRuazjfL3Bx5eI409VZSqgND+4UNnmzLVdPj9FqFJNPqBZFve4w==
   dependencies:
     glob "^7.1.3"
+
+ringbufferjs@^2.0.0:
+  version "2.0.0"
+  resolved "http://bnpm.byted.org/ringbufferjs/download/ringbufferjs-2.0.0.tgz#09f40e2675a99cfef430b7ec5815ac1bc2e24120"
+  integrity sha1-CfQOJnWpnP70MLfsWBWsG8LiQSA=
 
 ripemd160@^2.0.0, ripemd160@^2.0.1:
   version "2.0.2"
