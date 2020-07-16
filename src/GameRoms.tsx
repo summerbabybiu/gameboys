@@ -15,6 +15,10 @@ export const NESGames = [
   {
     name: "古巴战争",
     url: './roms/GUERRILLA_WAR.nes'
+  },
+  {
+    name: "魂斗罗",
+    url: './roms/hundouluo.nes'
   }
 ];
 
