@@ -18,14 +18,10 @@ export default class Speakers {
   }
 
   getSampleRate() {
-    var AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (AudioContext) {
+    if (!this.audioCtx) {
       return 44100;
     }
-    let myCtx = new AudioContext();
-    let sampleRate = myCtx.sampleRate;
-    myCtx.close();
-    return sampleRate;
+    return this.audioCtx.sampleRate;
   }
 
   start() {
@@ -35,7 +31,7 @@ export default class Speakers {
       console.log('audio context not support');
       return;
     }
-    this.audioCtx = new AudioContext();
+    this.audioCtx = window.audioContext;
     this.scriptNode = this.audioCtx.createScriptProcessor(1024, 0, 2);
     this.scriptNode.onaudioprocess = this.onaudioprocess;
     this.scriptNode.connect(this.audioCtx.destination);
@@ -53,7 +49,7 @@ export default class Speakers {
     }
   }
 
-  writeSample = (left, right) => {
+  writeSample(left, right) {
     if (this.buffer.size() / 2 >= this.bufferSize) {
       // console.log(`Buffer overrun`);
       this.buffer.deqN(this.bufferSize / 2);

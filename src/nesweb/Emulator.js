@@ -78,7 +78,7 @@ class Emulator extends Component {
     this.nes = new NES({
       onFrame: this.screen.setBuffer,
       onStatusUpdate: console.log,
-      onAudioSample: this.speakers.writeSample,
+      onAudioSample: this.speakers.writeSample.bind(this.speakers),
       sampleRate: this.speakers.getSampleRate()
     });
 

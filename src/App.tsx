@@ -54,7 +54,14 @@ function App() {
 function GameList(props: { onselect: (url: string) => void}) {
   return (
     <div className="game-list" onClick={e => {
-      props.onselect((e.target as any).getAttribute('data-key'));
+      const url = (e.target as any).getAttribute('data-key');
+      if (!url) return;
+      props.onselect(url);
+      if (!(window as any).audioContext) {
+        const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+        (window as any).audioContext = new AudioContext();
+        (window as any).audioContext.resume();
+      }
     }}>
       {NESGames.map(game => {
         return (

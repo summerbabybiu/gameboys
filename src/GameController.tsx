@@ -259,16 +259,15 @@ export class RightController extends React.Component<ControllerProps, any> {
         const rectA = this.buttonA.current.getBoundingClientRect() as DOMRect;
         const rectB = this.buttonB.current.getBoundingClientRect() as DOMRect;
         const rectC = this.buttonC.current.getBoundingClientRect() as DOMRect;
-        let key: any[] = [];
         let nextStatus = 0;
         if (this.rectContainsPoint(rectA, point)) {
-            key = [ControllerKeys.BUTTON_A];
+            // key = [ControllerKeys.BUTTON_A];
             nextStatus = 1;
         } else if (this.rectContainsPoint(rectB, point)) {
-            key = [ControllerKeys.BUTTON_B];
+            // key = [ControllerKeys.BUTTON_B];
             nextStatus = 2;
         } else if (this.rectContainsPoint(rectC, point)) {
-            key = [ControllerKeys.BUTTON_A, ControllerKeys.BUTTON_B];
+            // key = [ControllerKeys.BUTTON_A, ControllerKeys.BUTTON_B];
             nextStatus = 3;
         }
         if (nextStatus !== this.state.currentStatus) {
