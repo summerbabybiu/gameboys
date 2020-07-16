@@ -2,19 +2,19 @@ export const NESGames = [
   {
     name: "热血联盟足球（汉化版）",
     // url: '/roms/hotblood-football2.nes'
-    url: '/roms/nekketsu_zuqiu3_CHS.nes'
+    url: './roms/nekketsu_zuqiu3_CHS.nes'
   },
   {
     name: "热血篮球（汉化版）",
-    url: '/roms/rexuelanqiu.nes'
+    url: './roms/rexuelanqiu.nes'
   },
   {
     name: "热血格斗传说",
-    url: '/roms/rexuegedou.nes'
+    url: './roms/rexuegedou.nes'
   },
   {
     name: "古巴战争",
-    url: '/roms/GUERRILLA_WAR.nes'
+    url: './roms/GUERRILLA_WAR.nes'
   }
 ];
 

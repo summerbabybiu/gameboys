@@ -354,3 +354,23 @@ export class RightController extends React.Component<ControllerProps, any> {
         );
     }
 }
+
+const KeyboardMap = [75,74,84, 89, 87, 83, 65, 68];
+
+export function EnableKeyboardController() {
+    window.onkeydown = (ev: KeyboardEvent) => {
+        const target = KeyboardMap.indexOf(ev.keyCode);
+        if (target < 0) return;
+        if ((window as any).nes) {
+            (window as any).nes.buttonDown(1, target);
+        }
+    };
+
+    window.onkeyup = (ev: KeyboardEvent) => {
+        const target = KeyboardMap.indexOf(ev.keyCode);
+        if (target < 0) return;
+        if ((window as any).nes) {
+            (window as any).nes.buttonUp(1, target);
+        }
+    };
+}
