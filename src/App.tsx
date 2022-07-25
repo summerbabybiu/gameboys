@@ -3,6 +3,18 @@ import Emulator from './nesweb/Emulator';
 import { NESGames, loadBinary } from './GameRoms';
 import './App.css';
 import { LeftController, RightController } from './GameController';
+import LeftStick from './LeftController';
+
+const ControllerKeys = [
+  'BUTTON_A',
+  'BUTTON_B',
+  'BUTTON_SELECT',
+  'BUTTON_START',
+  'BUTTON_UP',
+  'BUTTON_DOWN',
+  'BUTTON_LEFT', 
+  'BUTTON_RIGHT'
+];
 
 function App() {
   const [romData, setRomData] = useState(null);
@@ -21,14 +33,14 @@ function App() {
   }, [url]);
 
   const handleKeyDown = (k: number) => {
-    console.log('keydown', k);
+    console.log('keydown', ControllerKeys[k]);
     if ((window as any).nes) {
       (window as any).nes.buttonDown(1, k);
     }
   }
 
   const handleKeyUp = (k: number) => {
-    console.log('keyup', k);
+    console.log('keyup', ControllerKeys[k]);
     if ((window as any).nes) {
       (window as any).nes.buttonUp(1, k);
     }
@@ -39,7 +51,8 @@ function App() {
   // }
   return (
     <div className="App">
-      <LeftController onKeyDown={k => handleKeyDown(k)} onkeyUp={k => handleKeyUp(k)} />
+      {/* <LeftController onKeyDown={k => handleKeyDown(k)} onkeyUp={k => handleKeyUp(k)} /> */}
+      <LeftStick onKeyDown={k => { handleKeyDown(k)}} onKeyUp={k => handleKeyUp(k)}/>
       <div id="monitor">
         { romData ? <Emulator romData={romData} ref={emulator}/> : <GameList onselect={ url => setUrl(url)}/> }
       </div>
