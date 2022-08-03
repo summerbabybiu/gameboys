@@ -12,7 +12,7 @@ const ControllerKeys = [
   'BUTTON_START',
   'BUTTON_UP',
   'BUTTON_DOWN',
-  'BUTTON_LEFT', 
+  'BUTTON_LEFT',
   'BUTTON_RIGHT'
 ];
 
@@ -52,19 +52,21 @@ function App() {
   return (
     <div className="App">
       {/* <LeftController onKeyDown={k => handleKeyDown(k)} onkeyUp={k => handleKeyUp(k)} /> */}
-      <LeftStick onKeyDown={k => { handleKeyDown(k)}} onKeyUp={k => handleKeyUp(k)}/>
-      <div id="monitor">
-        { romData ? <Emulator romData={romData} ref={emulator}/> : <GameList onselect={ url => setUrl(url)}/> }
-      </div>
-      <div id="right-controller">
-        <RightController onKeyDown={k => handleKeyDown(k)} onkeyUp={k => handleKeyUp(k)} />
+      <div className="common-cover">
+        <LeftStick onKeyDown={k => { handleKeyDown(k) }} onKeyUp={k => handleKeyUp(k)} />
+        <div id="monitor">
+          {romData ? <Emulator romData={romData} ref={emulator} /> : <GameList onselect={url => setUrl(url)} />}
+        </div>
+        <div id="right-controller">
+          <RightController onKeyDown={k => handleKeyDown(k)} onkeyUp={k => handleKeyUp(k)} />
+        </div>
       </div>
     </div>
   );
 }
 
 
-function GameList(props: { onselect: (url: string) => void}) {
+function GameList(props: { onselect: (url: string) => void }) {
   return (
     <div className="game-list" onClick={e => {
       const url = (e.target as any).getAttribute('data-key');

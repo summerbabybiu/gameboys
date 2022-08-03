@@ -18,7 +18,7 @@ const LeftStick = (props: IProps) => {
     prevKeys.filter(p => keys.indexOf(p) < 0).forEach(k => props.onKeyUp(k));
     keys.forEach(k => props.onKeyDown(k));
     prevKeyStatus.current = keyStatus;
-  }, [keyStatus]);
+  }, [keyStatus, props]);
 
   const handleStart = useCallback((event: IJoystickUpdateEvent) => console.log(event), []);
 
@@ -67,11 +67,13 @@ const LeftStick = (props: IProps) => {
     const keys = RetriveButtonKeysByStatus(keyStatus);
     keys.forEach(k => props.onKeyUp(k));
     setKeyStatus(DirectionStatus.NONE);
-  }, []);
+  }, [keyStatus, props]);
 
   return (
     <div id="left-controller">
+      <div className="direction-controller">
       <Joystick size={JOYSTICK_OFFSET * 2} baseColor="#eee" stickColor='#999' move={handleMove} stop={handleStop}/>
+      </div>
     </div>
   );
 }

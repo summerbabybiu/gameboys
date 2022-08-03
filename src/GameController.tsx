@@ -315,7 +315,7 @@ export class RightController extends React.Component<ControllerProps, any> {
                     }}></div>
                 </div>
                 <div className="arrow-controls" id="action-controls" style={{justifyContent: 'space-around'}}>
-                    <div className="arrow-top">
+                    <div className="arrow-top" style={{justifyContent: 'space-around'}}>
                         <div id="control-ab" className="gamepad" ref={this.buttonC}
                         // onClick={e => {
                         //     this.props.onKeyDown(ControllerKeys.BUTTON_A);
@@ -327,9 +327,7 @@ export class RightController extends React.Component<ControllerProps, any> {
                         //     e.preventDefault();
                         // }}
                         ></div>
-                    </div>
-                    <div className="arrow-top" style={{justifyContent: 'space-around'}}>
-                    <div id="control-b" className="gamepad"  ref={this.buttonB}
+                           <div id="control-b" className="gamepad"  ref={this.buttonB}
                     // onClick={e => {
                     //     this.props.onKeyDown(ControllerKeys.BUTTON_B);
                     //     setTimeout(() => {
@@ -338,6 +336,9 @@ export class RightController extends React.Component<ControllerProps, any> {
                     //     e.preventDefault();
                     // }}
                     ></div>
+                    </div>
+                    <div className="arrow-top" style={{justifyContent: 'space-around'}}>
+                 {/* 确定 */}
                     <div id="control-a" className="gamepad" ref={this.buttonA}
                     // onClick={e => {
                     //     this.props.onKeyDown(ControllerKeys.BUTTON_A);

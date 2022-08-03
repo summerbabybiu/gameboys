@@ -8699,6 +8699,11 @@ react-is@^16.12.0, react-is@^16.8.1, react-is@^16.8.4:
   resolved "http://registry.npm.souche-inc.com/react-is/download/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha1-eJcppNw23imZ3BVt1sHZwYzqVqQ=
 
+react-joystick-component@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.npmmirror.com/react-joystick-component/-/react-joystick-component-4.0.1.tgz#c70a76d1dc8fdb2b9713657b0bb905dafe965ada"
+  integrity sha512-efPaCNoDIiBNs0eUjsrE4Q+q4h5zXDqBs54vTMYSPv73useSl8VsJJeOburMHuxwsS4HoqqMu12Aav9SM7Usew==
+
 react-scripts@3.4.1:
   version "3.4.1"
   resolved "http://registry.npm.souche-inc.com/react-scripts/download/react-scripts-3.4.1.tgz#f551298b5c71985cc491b9acf3c8e8c0ae3ada0a"
